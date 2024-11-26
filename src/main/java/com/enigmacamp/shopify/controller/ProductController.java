@@ -6,6 +6,9 @@ import com.enigmacamp.shopify.model.dto.response.ProductResponse;
 import com.enigmacamp.shopify.model.entity.Product;
 import com.enigmacamp.shopify.utils.exeptions.ResourceNotFoundException;
 import com.enigmacamp.shopify.utils.exeptions.ValidationException;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,7 +20,7 @@ import java.util.List;
 import java.util.Set;
 
 @RestController
-@RequestMapping("/product")
+@RequestMapping("/api/v1/product")
 public class ProductController {
     List<Product> products = new ArrayList<>();
 
@@ -83,6 +86,17 @@ public class ProductController {
         return ResponseEntity.ok(products);
     }
 
+    @Operation(summary = "Get product by ID")
+    @ApiResponses({
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Product found"
+            ),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "Product not found"
+            )
+    })
     @GetMapping("/{id}")
     public ResponseEntity<CommonResponse<Product>> getProductById(@PathVariable String id) {
         for (Product product : products) {
