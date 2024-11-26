@@ -4,21 +4,36 @@ import com.enigmacamp.shopify.model.dto.request.ProductRequest;
 import com.enigmacamp.shopify.model.dto.response.CommonResponse;
 import com.enigmacamp.shopify.model.dto.response.ProductResponse;
 import com.enigmacamp.shopify.model.entity.Product;
+import com.enigmacamp.shopify.utils.exeptions.ResourceNotFoundException;
+import com.enigmacamp.shopify.utils.exeptions.ValidationException;
+import jakarta.validation.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/product")
 public class ProductController {
     List<Product> products = new ArrayList<>();
 
+    @Autowired
+    private Validator validator;
+
     @PostMapping
     public ResponseEntity<CommonResponse<ProductResponse>>
     createNewProduct(@RequestBody ProductRequest payload) {
+
+        //TODO: validate request
+        Set<ConstraintViolation<ProductRequest>> violations = validator.validate(payload);
+       if (!violations.isEmpty()) {
+           throw new ValidationException(violations.iterator().next().getMessage(), null);
+       }
+
         //TODO: change payload to product
         Product product = Product.builder()
                 .id(payload.getId())
@@ -54,28 +69,36 @@ public class ProductController {
             @RequestParam(required = false) String name
     ) {
         if (products.isEmpty()) {
-            return ResponseEntity
-                    .status(HttpStatus.NOT_FOUND.value())
-                    .body(products);
+            throw new ResourceNotFoundException("Product not found!", null);
         }
 
-        System.out.println("Query Params: " + name);
+        // Optionally filter products by name
+        if (name != null) {
+            List<Product> filteredProducts = products.stream()
+                    .filter(product -> product.getName().toLowerCase().contains(name.toLowerCase()))
+                    .toList();
+            return ResponseEntity.ok(filteredProducts);
+        }
 
         return ResponseEntity.ok(products);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Product> getProductById(@PathVariable String id) {
+    public ResponseEntity<CommonResponse<Product>> getProductById(@PathVariable String id) {
         for (Product product : products) {
             if (product.getId().equals(id)) {
+                CommonResponse<Product> response = CommonResponse.<Product>builder()
+                        .statusCode(HttpStatus.OK.value())
+                        .message("Product found!")
+                        .data(product)
+                        .build();
+
                 return ResponseEntity
                         .status(HttpStatus.OK.value())
-                        .body(product);
+                        .body(response);
             }
         }
 
-        return ResponseEntity
-                .status(HttpStatus.NOT_FOUND.value())
-                .body(null);
+        throw new ResourceNotFoundException("Product not found!", null);
     }
 }
