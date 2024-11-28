@@ -4,12 +4,14 @@ import com.enigmacamp.shopify.model.dto.request.ProductRequest;
 import com.enigmacamp.shopify.model.dto.response.CommonResponse;
 import com.enigmacamp.shopify.model.dto.response.ProductResponse;
 import com.enigmacamp.shopify.model.entity.Product;
+import com.enigmacamp.shopify.service.ProductService;
 import com.enigmacamp.shopify.utils.exeptions.ResourceNotFoundException;
 import com.enigmacamp.shopify.utils.exeptions.ValidationException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.*;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,8 +23,11 @@ import java.util.Set;
 
 @RestController
 @RequestMapping("/api/v1/product")
+@RequiredArgsConstructor
 public class ProductController {
     List<Product> products = new ArrayList<>();
+    
+    private final ProductService productService;
 
     @Autowired
     private Validator validator;
@@ -30,39 +35,21 @@ public class ProductController {
     @PostMapping
     public ResponseEntity<CommonResponse<ProductResponse>>
     createNewProduct(@RequestBody ProductRequest payload) {
-
-        //TODO: validate request
+        
         Set<ConstraintViolation<ProductRequest>> violations = validator.validate(payload);
        if (!violations.isEmpty()) {
            throw new ValidationException(violations.iterator().next().getMessage(), null);
        }
 
-        //TODO: change payload to product
-        Product product = Product.builder()
-                .id(payload.getId())
-                .name(payload.getName())
-                .price(payload.getPrice())
-                .stock(payload.getStock())
-                .build();
+        ProductResponse productResp = productService.create(payload);
 
-        //TODO: add product payload to list
-        products.add(product);
-
-        //TODO change produt to product response
-        ProductResponse productResp = ProductResponse.builder()
-                .id(product.getId())
-                .name(product.getName())
-                .price(product.getPrice())
-                .stock(product.getStock())
-                .build();
-
-         CommonResponse<ProductResponse> response = CommonResponse.<ProductResponse>builder()
+       CommonResponse<ProductResponse> response = CommonResponse.<ProductResponse>builder()
                         .statusCode(HttpStatus.CREATED.value())
                         .message("New product added!")
                         .data(productResp)
                         .build();
 
-        return ResponseEntity
+       return ResponseEntity
                 .status(HttpStatus.CREATED.value())
                 .body(response);
     }
