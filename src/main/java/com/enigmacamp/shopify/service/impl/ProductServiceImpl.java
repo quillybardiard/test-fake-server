@@ -8,6 +8,7 @@ import com.enigmacamp.shopify.service.ProductService;
 import com.enigmacamp.shopify.utils.exeptions.ResourceNotFoundException;
 import com.enigmacamp.shopify.utils.exeptions.ValidationException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -43,8 +44,19 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<ProductResponse> getAll() {
-        return List.of();
+    public List<ProductResponse> getAll(String name) {
+        // Optionally filter products by name
+        if (name != null) {
+            return productRepository.findProductByNameJPQL("%" + name + "%").stream().map(this::convertToProductResponse).toList();
+        }
+
+        List<ProductResponse> products = productRepository.findAll().stream().map(this::convertToProductResponse).toList();
+
+        if (products.isEmpty()) {
+            throw new ResourceNotFoundException("Product not found!", null);
+        }
+
+        return products;
     }
 
     private ProductResponse convertToProductResponse(Product product) {

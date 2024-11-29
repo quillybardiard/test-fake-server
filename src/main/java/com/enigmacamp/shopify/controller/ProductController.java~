@@ -56,7 +56,7 @@ public class ProductController {
     public ResponseEntity<List<ProductResponse>> getAllProduct(
             @RequestParam(required = false) String name
     ) {
-        List<ProductResponse> products = productService.getAll(name);
+        List<ProductResponse> products = productService.getAll();
         return ResponseEntity.ok(products);
     }
 
