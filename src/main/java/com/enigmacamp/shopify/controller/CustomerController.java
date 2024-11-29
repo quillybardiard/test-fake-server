@@ -1,5 +1,6 @@
 package com.enigmacamp.shopify.controller;
 
+import com.enigmacamp.shopify.model.dto.response.CustomerResponse;
 import com.enigmacamp.shopify.model.entity.Customer;
 import com.enigmacamp.shopify.service.CustomerService;
 import com.enigmacamp.shopify.service.impl.CustomerServiceImpl;
@@ -18,7 +19,7 @@ public class CustomerController {
     private final CustomerServiceImpl customerService;
 
     @GetMapping("/search")
-    public List<Customer> searchCustomers(@RequestParam String query) {
+    public List<CustomerResponse> searchCustomers(@RequestParam String query) {
         return customerService.searchCustomers(query);
     }
 }

@@ -1,0 +1,17 @@
+package com.enigmacamp.shopify.model.dto.response;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
+
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+public class CustomerResponse {
+    private String id;
+    private String name;
+    private String email;
+    private String phoneNumber;
+    private String address;
+    private String createAt;
+}
