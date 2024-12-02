@@ -34,6 +34,10 @@ public class Customer {
     @JoinColumn(name = "image_id", unique = true)
     private Image image;
 
+    @OneToOne
+    @JoinColumn(name = "user_account_id", unique = true)
+    private UserAccount userAccount;
+
     @Column(name = "create_at")
     @Temporal(TemporalType.DATE)
     @JsonFormat(pattern = "yyyy-MM-dd")

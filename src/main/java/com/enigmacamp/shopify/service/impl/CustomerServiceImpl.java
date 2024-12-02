@@ -5,6 +5,7 @@ import com.enigmacamp.shopify.model.dto.response.ProductResponse;
 import com.enigmacamp.shopify.model.entity.Customer;
 import com.enigmacamp.shopify.model.entity.Product;
 import com.enigmacamp.shopify.repository.CustomerRepository;
+import com.enigmacamp.shopify.service.CustomerService;
 import com.enigmacamp.shopify.utils.specifications.CustomerSpecification;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.domain.Specification;
@@ -14,12 +15,19 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class CustomerServiceImpl {
+public class CustomerServiceImpl implements CustomerService {
     private final CustomerRepository customerRepository;
 
+    @Override
     public List<CustomerResponse> searchCustomers(String query) {
         Specification<Customer> spec = CustomerSpecification.getSpecification(query);
         return customerRepository.findAll(spec).stream().map(this::convertToCustomerResponse).toList();
+    }
+
+    @Override
+    public CustomerResponse create(Customer customer) {
+        Customer customerSaved = customerRepository.saveAndFlush(customer);
+        return convertToCustomerResponse(customerSaved);
     }
 
     private CustomerResponse convertToCustomerResponse(Customer customer) {

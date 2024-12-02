@@ -7,7 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class ShopifyApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(ShopifyApplication.class, args);
+		SpringApplication.run(ShopifyApplication.class, "--spring.profiles.active=prod");
 	}
 
 }
