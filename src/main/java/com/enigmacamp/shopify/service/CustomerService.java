@@ -7,5 +7,6 @@ import java.util.List;
 
 public interface CustomerService {
     List<CustomerResponse> searchCustomers(String query);
+    CustomerResponse getCustomerById(String id);
     CustomerResponse create(Customer customer);
 }

@@ -9,5 +9,6 @@ import java.util.List;
 public interface ProductService {
     ProductResponse create(ProductRequest payload);
     ProductResponse getById(String id);
+    ProductResponse updatePatch(ProductRequest payload);
     List<ProductResponse> getAll(String name);
 }

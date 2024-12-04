@@ -9,7 +9,6 @@ import lombok.Getter;
 @Getter
 public class ProductRequest {
     private String id;
-    @NotBlank(message = "Name is required")
     private String name;
     @Min(value = 0, message = "Price must be positive")
     private Long price;

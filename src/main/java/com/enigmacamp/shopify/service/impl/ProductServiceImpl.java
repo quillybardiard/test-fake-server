@@ -25,7 +25,6 @@ public class ProductServiceImpl implements ProductService {
                 .price(payload.getPrice())
                 .stock(payload.getStock())
                 .build();
-
         try {
              productRepository.save(product);
         } catch (Exception e) {
@@ -41,6 +40,26 @@ public class ProductServiceImpl implements ProductService {
                 .orElseThrow(() ->
                         new ResourceNotFoundException("Product not found", null));
         return convertToProductResponse(product);
+    }
+
+    @Override
+    public ProductResponse updatePatch(ProductRequest payload) {
+        System.out.println("APakah ini null: " + payload.getId());
+        Product product = findOrThrowProduct(payload.getId());
+
+        // Update Patch Process
+        if (payload.getName() != null) product.setName(payload.getName());
+        if (payload.getPrice() != null) product.setPrice(payload.getPrice());
+        if (payload.getStock() != null) product.setStock(payload.getStock());
+
+        product = productRepository.saveAndFlush(product);
+        return convertToProductResponse(product);
+    }
+
+    private Product findOrThrowProduct(String id) {
+        return productRepository.findById(id)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException("Product not found", null));
     }
 
     @Override

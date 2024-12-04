@@ -25,6 +25,12 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
+    public CustomerResponse getCustomerById(String id) {
+        Customer customer = customerRepository.findById(id).orElseThrow(() -> new RuntimeException("Customer not found"));
+        return convertToCustomerResponse(customer);
+    }
+
+    @Override
     public CustomerResponse create(Customer customer) {
         Customer customerSaved = customerRepository.saveAndFlush(customer);
         return convertToCustomerResponse(customerSaved);
