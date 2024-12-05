@@ -1,5 +1,6 @@
 package com.enigmacamp.shopify.model.entity;
 
+import com.enigmacamp.shopify.constant.ConstantTable;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -8,7 +9,7 @@ import lombok.NoArgsConstructor;
 import java.util.List;
 
 @Entity
-@Table(name = "m_user_account")
+@Table(name = ConstantTable.USER_ACCOUNT)
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor

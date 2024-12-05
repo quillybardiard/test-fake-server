@@ -1,5 +1,6 @@
 package com.enigmacamp.shopify.model.entity;
 
+import com.enigmacamp.shopify.constant.ConstantTable;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.*;
@@ -12,7 +13,7 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Table(name = "m_customer")
+@Table(name = ConstantTable.CUSTOMER)
 public class Customer {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)

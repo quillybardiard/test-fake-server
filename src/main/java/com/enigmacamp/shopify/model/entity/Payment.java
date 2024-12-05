@@ -1,5 +1,6 @@
 package com.enigmacamp.shopify.model.entity;
 
+import com.enigmacamp.shopify.constant.ConstantTable;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,7 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Table(name = "m_payment")
+@Table(name = ConstantTable.PAYMENT)
 public class Payment {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)

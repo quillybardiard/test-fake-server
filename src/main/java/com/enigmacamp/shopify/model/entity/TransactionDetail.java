@@ -1,5 +1,6 @@
 package com.enigmacamp.shopify.model.entity;
 
+import com.enigmacamp.shopify.constant.ConstantTable;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -12,7 +13,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 @Getter
-@Table(name = "transaction_details")
+@Table(name = ConstantTable.TRANSACTION_DETAIL)
 public class TransactionDetail {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)

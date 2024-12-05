@@ -1,9 +1,10 @@
 package com.enigmacamp.shopify.model.entity;
 
+import com.enigmacamp.shopify.constant.ConstantTable;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "m_image")
+@Table(name = ConstantTable.IMAGE)
 public class Image {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)

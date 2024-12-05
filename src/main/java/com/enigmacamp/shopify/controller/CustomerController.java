@@ -1,5 +1,6 @@
 package com.enigmacamp.shopify.controller;
 
+import com.enigmacamp.shopify.constant.APIUrl;
 import com.enigmacamp.shopify.model.dto.response.CustomerResponse;
 import com.enigmacamp.shopify.model.entity.Customer;
 import com.enigmacamp.shopify.service.CustomerService;
@@ -13,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/customers")
+@RequestMapping(APIUrl.BASE_URL+APIUrl.CUSTOMER)
 @RequiredArgsConstructor
 public class CustomerController {
     private final CustomerServiceImpl customerService;

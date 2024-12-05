@@ -1,7 +1,6 @@
 package com.enigmacamp.shopify.service.impl;
 
 import com.enigmacamp.shopify.model.dto.request.ProductRequest;
-import com.enigmacamp.shopify.model.dto.request.TransactionDetailRequest;
 import com.enigmacamp.shopify.model.dto.request.TransactionRequest;
 import com.enigmacamp.shopify.model.dto.response.CustomerResponse;
 import com.enigmacamp.shopify.model.dto.response.ProductResponse;
@@ -10,6 +9,7 @@ import com.enigmacamp.shopify.model.entity.*;
 import com.enigmacamp.shopify.repository.TransactionDetailRepository;
 import com.enigmacamp.shopify.repository.TransactionRepository;
 import com.enigmacamp.shopify.service.CustomerService;
+import com.enigmacamp.shopify.utils.mapper.ProductMapper;
 import com.enigmacamp.shopify.service.ProductService;
 import com.enigmacamp.shopify.service.TransactionService;
 import com.enigmacamp.shopify.utils.exeptions.ValidationException;
@@ -28,6 +28,7 @@ public class TransactionServiceImpl implements TransactionService {
     private final TransactionDetailRepository transactionDetailRepository;
     private final ProductService productService;
     private final CustomerService customerService;
+    private final ProductMapper productMapper;
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -60,12 +61,8 @@ public class TransactionServiceImpl implements TransactionService {
                     .build());
 
             // TODO: Prepare Data Transaction Detail
-            Product productEntity = Product.builder()
-                    .id(product.getId())
-                    .name(product.getName())
-                    .price(product.getPrice())
-                    .stock(stock)
-                    .build();
+
+            Product productEntity = productMapper.toEntity(product);
 
             TransactionDetail trxDetail = TransactionDetail.builder()
                     .product(productEntity)

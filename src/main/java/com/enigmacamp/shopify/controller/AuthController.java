@@ -1,5 +1,6 @@
 package com.enigmacamp.shopify.controller;
 
+import com.enigmacamp.shopify.constant.APIUrl;
 import com.enigmacamp.shopify.model.dto.request.CustomerRequest;
 import com.enigmacamp.shopify.model.dto.response.CommonResponse;
 import com.enigmacamp.shopify.model.dto.response.RegisterResponse;
@@ -13,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/v1/auth")
+@RequestMapping(APIUrl.BASE_URL + APIUrl.AUTH)
 @RequiredArgsConstructor
 public class AuthController {
     private final AuthService authService;

@@ -4,11 +4,11 @@ import com.enigmacamp.shopify.model.dto.request.ProductRequest;
 import com.enigmacamp.shopify.model.dto.response.ProductResponse;
 import com.enigmacamp.shopify.model.entity.Product;
 import com.enigmacamp.shopify.repository.ProductRepository;
+import com.enigmacamp.shopify.utils.mapper.ProductMapper;
 import com.enigmacamp.shopify.service.ProductService;
 import com.enigmacamp.shopify.utils.exeptions.ResourceNotFoundException;
 import com.enigmacamp.shopify.utils.exeptions.ValidationException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,6 +17,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ProductServiceImpl implements ProductService {
     private final ProductRepository productRepository;
+    private final ProductMapper productMapper;
 
     @Override
     public ProductResponse create(ProductRequest payload) {
@@ -31,7 +32,7 @@ public class ProductServiceImpl implements ProductService {
             throw new ValidationException("Constrain Error", e);
         }
 
-        return convertToProductResponse(product);
+        return productMapper.toResponse(product);
     }
 
     @Override
@@ -39,12 +40,12 @@ public class ProductServiceImpl implements ProductService {
         Product product = productRepository.findById(id)
                 .orElseThrow(() ->
                         new ResourceNotFoundException("Product not found", null));
-        return convertToProductResponse(product);
+        return productMapper.toResponse(product);
     }
+
 
     @Override
     public ProductResponse updatePatch(ProductRequest payload) {
-        System.out.println("APakah ini null: " + payload.getId());
         Product product = findOrThrowProduct(payload.getId());
 
         // Update Patch Process
@@ -53,7 +54,7 @@ public class ProductServiceImpl implements ProductService {
         if (payload.getStock() != null) product.setStock(payload.getStock());
 
         product = productRepository.saveAndFlush(product);
-        return convertToProductResponse(product);
+        return productMapper.toResponse(product);
     }
 
     private Product findOrThrowProduct(String id) {
@@ -66,24 +67,15 @@ public class ProductServiceImpl implements ProductService {
     public List<ProductResponse> getAll(String name) {
         // Optionally filter products by name
         if (name != null) {
-            return productRepository.findProductByNameJPQL("%" + name + "%").stream().map(this::convertToProductResponse).toList();
+            return productRepository.findProductByNameJPQL("%" + name + "%").stream().map(productMapper::toResponse).toList();
         }
 
-        List<ProductResponse> products = productRepository.findAll().stream().map(this::convertToProductResponse).toList();
+        List<ProductResponse> products = productRepository.findAll().stream().map(productMapper::toResponse).toList();
 
         if (products.isEmpty()) {
             throw new ResourceNotFoundException("Product not found!", null);
         }
 
         return products;
-    }
-
-    private ProductResponse convertToProductResponse(Product product) {
-        return ProductResponse.builder()
-                .id(product.getId())
-                .name(product.getName())
-                .price(product.getPrice())
-                .stock(product.getStock())
-                .build();
     }
 }

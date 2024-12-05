@@ -1,5 +1,6 @@
 package com.enigmacamp.shopify.controller;
 
+import com.enigmacamp.shopify.constant.APIUrl;
 import com.enigmacamp.shopify.model.dto.request.ProductRequest;
 import com.enigmacamp.shopify.model.dto.response.CommonResponse;
 import com.enigmacamp.shopify.model.dto.response.ProductResponse;
@@ -22,7 +23,7 @@ import java.util.List;
 import java.util.Set;
 
 @RestController
-@RequestMapping("/api/v1/product")
+@RequestMapping(APIUrl.BASE_URL + APIUrl.PRODUCT)
 @RequiredArgsConstructor
 public class ProductController {
     private final ProductService productService;

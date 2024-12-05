@@ -1,5 +1,6 @@
 package com.enigmacamp.shopify.controller;
 
+import com.enigmacamp.shopify.constant.APIUrl;
 import com.enigmacamp.shopify.model.dto.request.TransactionRequest;
 import com.enigmacamp.shopify.model.dto.response.CommonResponse;
 import com.enigmacamp.shopify.model.dto.response.TransactionResponse;
@@ -14,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/purchases")
+@RequestMapping(APIUrl.BASE_URL + APIUrl.PURCHASE)
 public class PurchaseController {
     private final TransactionService transactionService;
 
