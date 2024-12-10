@@ -1,8 +1,10 @@
 package com.enigmacamp.shopify.controller;
 
 import com.enigmacamp.shopify.constant.APIUrl;
+import com.enigmacamp.shopify.model.dto.request.AuthRequest;
 import com.enigmacamp.shopify.model.dto.request.CustomerRequest;
 import com.enigmacamp.shopify.model.dto.response.CommonResponse;
+import com.enigmacamp.shopify.model.dto.response.LoginResponse;
 import com.enigmacamp.shopify.model.dto.response.RegisterResponse;
 import com.enigmacamp.shopify.service.AuthService;
 import lombok.RequiredArgsConstructor;
@@ -31,6 +33,21 @@ public class AuthController {
 
         return ResponseEntity
                 .status(HttpStatus.CREATED)
+                .body(commonResponse);
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<CommonResponse<LoginResponse>> login(@RequestBody AuthRequest request) {
+        LoginResponse response = authService.login(request);
+
+        CommonResponse<LoginResponse> commonResponse = CommonResponse.<LoginResponse>builder()
+                .statusCode(HttpStatus.OK.value())
+                .message("Successfuly login")
+                .data(response)
+                .build();
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
                 .body(commonResponse);
     }
 
