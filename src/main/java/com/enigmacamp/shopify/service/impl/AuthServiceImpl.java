@@ -8,6 +8,7 @@ import com.enigmacamp.shopify.model.entity.Customer;
 import com.enigmacamp.shopify.model.entity.UserAccount;
 import com.enigmacamp.shopify.service.AuthService;
 import com.enigmacamp.shopify.service.CustomerService;
+import com.enigmacamp.shopify.service.JwtService;
 import com.enigmacamp.shopify.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -29,6 +30,7 @@ public class AuthServiceImpl implements AuthService {
    private final UserService userService;
    private final AuthenticationManager authenticationManager;
    private final PasswordEncoder passwordEncoder;
+   private final JwtService jwtService;
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -73,8 +75,7 @@ public class AuthServiceImpl implements AuthService {
 
         // Generate Token
         UserAccount user = (UserAccount) authentication.getPrincipal();
-        String token = "KMZWAY87AA";
-
+        String token = jwtService.generateToken(user);
         return LoginResponse.builder()
                 .username(request.getUsername())
                 .token(token)

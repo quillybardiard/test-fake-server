@@ -19,6 +19,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public UserAccount loadUserById(String id) {
+        // TODO: Get User By Id
+        return null;
+    }
+
+    @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("User not found"));
     }
