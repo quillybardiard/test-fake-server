@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 @RestController
@@ -27,9 +28,7 @@ import java.util.Set;
 @RequiredArgsConstructor
 public class ProductController {
     private final ProductService productService;
-
-    @Autowired
-    private Validator validator;
+    private final Validator validator;
 
     @PostMapping
     public ResponseEntity<CommonResponse<ProductResponse>>
@@ -55,7 +54,8 @@ public class ProductController {
 
     @GetMapping
     public ResponseEntity<List<ProductResponse>> getAllProduct(
-            @RequestParam(required = false) String name
+            @RequestParam(required = false) String name,
+            @RequestHeader("Authorization") Optional<String> authHeader
     ) {
         List<ProductResponse> products = productService.getAll(name);
         return ResponseEntity.ok(products);
