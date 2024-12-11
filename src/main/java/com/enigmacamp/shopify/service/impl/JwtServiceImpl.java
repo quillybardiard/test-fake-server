@@ -5,6 +5,7 @@ import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
+import com.auth0.jwt.interfaces.DecodedJWT;
 import com.enigmacamp.shopify.model.dto.response.JwtClaims;
 import com.enigmacamp.shopify.model.entity.UserAccount;
 import com.enigmacamp.shopify.service.JwtService;
@@ -55,7 +56,19 @@ public class JwtServiceImpl implements JwtService {
     @Override
     public JwtClaims getJwtClaims(String token) {
         // TODO: Get Claim Token
-        return null;
+        try {
+            Algorithm algorithm = Algorithm.HMAC256("KMZWAY87AA");
+            JWTVerifier jwtVerifier = JWT.require(algorithm).withIssuer("SHOPIFY APP").build();
+            DecodedJWT decodedJWT = jwtVerifier.verify(parseJwt(token));
+            return JwtClaims.builder()
+                    .userAccountId(decodedJWT.getSubject())
+                    .roles(decodedJWT.getClaim("role").asList(String.class))
+                    .build();
+
+        } catch (JWTVerificationException e) {
+            log.error("Invalid JWT token", e);
+            throw null;
+        }
     }
 
     private String parseJwt(String token) {

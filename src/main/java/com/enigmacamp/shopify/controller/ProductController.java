@@ -4,21 +4,17 @@ import com.enigmacamp.shopify.constant.APIUrl;
 import com.enigmacamp.shopify.model.dto.request.ProductRequest;
 import com.enigmacamp.shopify.model.dto.response.CommonResponse;
 import com.enigmacamp.shopify.model.dto.response.ProductResponse;
-import com.enigmacamp.shopify.model.entity.Product;
 import com.enigmacamp.shopify.service.ProductService;
-import com.enigmacamp.shopify.utils.exeptions.ResourceNotFoundException;
 import com.enigmacamp.shopify.utils.exeptions.ValidationException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.*;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -54,8 +50,7 @@ public class ProductController {
 
     @GetMapping
     public ResponseEntity<List<ProductResponse>> getAllProduct(
-            @RequestParam(required = false) String name,
-            @RequestHeader("Authorization") Optional<String> authHeader
+            @RequestParam(required = false) String name
     ) {
         List<ProductResponse> products = productService.getAll(name);
         return ResponseEntity.ok(products);
