@@ -1,5 +1,6 @@
 package com.enigmacamp.shopify.service.impl;
 
+import com.enigmacamp.shopify.model.dto.request.PaymentRequest;
 import com.enigmacamp.shopify.model.dto.request.ProductRequest;
 import com.enigmacamp.shopify.model.dto.request.TransactionRequest;
 import com.enigmacamp.shopify.model.dto.response.CustomerResponse;
@@ -8,10 +9,8 @@ import com.enigmacamp.shopify.model.dto.response.TransactionResponse;
 import com.enigmacamp.shopify.model.entity.*;
 import com.enigmacamp.shopify.repository.TransactionDetailRepository;
 import com.enigmacamp.shopify.repository.TransactionRepository;
-import com.enigmacamp.shopify.service.CustomerService;
+import com.enigmacamp.shopify.service.*;
 import com.enigmacamp.shopify.utils.mapper.ProductMapper;
-import com.enigmacamp.shopify.service.ProductService;
-import com.enigmacamp.shopify.service.TransactionService;
 import com.enigmacamp.shopify.utils.exeptions.ValidationException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -29,6 +28,8 @@ public class TransactionServiceImpl implements TransactionService {
     private final ProductService productService;
     private final CustomerService customerService;
     private final ProductMapper productMapper;
+    private final JwtService jwtService;
+    private final PaymentService paymentService;
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -94,5 +95,6 @@ public class TransactionServiceImpl implements TransactionService {
                 .transactionDetails(transaction.getTransactionDetails())
                 .totalPayment(totalPayment.get())
                 .build();
+
     }
 }

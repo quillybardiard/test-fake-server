@@ -29,7 +29,7 @@ public class AuthenticationFilter extends OncePerRequestFilter {
             HttpServletResponse response,
             FilterChain filterChain
     ) throws ServletException, IOException {
-        // Logic Here
+
         String bearerToken = request.getHeader("Authorization");
         if (bearerToken != null && jwtService.verifyJwtToken(bearerToken)) {
             JwtClaims jwtClaims = jwtService.getJwtClaims(bearerToken);
