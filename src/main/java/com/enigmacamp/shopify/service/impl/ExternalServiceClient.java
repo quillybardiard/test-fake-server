@@ -13,7 +13,7 @@ import org.springframework.web.client.RestTemplate;
 @AllArgsConstructor
 public class ExternalServiceClient {
     private final RestTemplate restTemplate;
-    private final String BASE_URL = "https://jsonplaceholder.typicode.com/";
+    private final String BASE_URL = "https://my-json-server.typicode.com/";
     // GET Request
     public Product getProuct(String id) {
         return  restTemplate.getForObject(
